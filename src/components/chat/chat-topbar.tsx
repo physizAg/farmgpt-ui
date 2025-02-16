@@ -15,12 +15,14 @@ import {
   SheetTrigger,
 } from "@/components/ui/sheet";
 
+
 import { Button } from "../ui/button";
 import { CaretSortIcon, HamburgerMenuIcon } from "@radix-ui/react-icons";
 import { Sidebar } from "../sidebar";
 import { Message } from "ai/react";
 import { getSelectedModel } from "@/lib/model-helper";
 import useChatStore from "@/app/hooks/useChatStore";
+import { LogOut } from "lucide-react";
 
 interface ChatTopbarProps {
   isLoading: boolean;
@@ -60,6 +62,10 @@ export default function ChatTopbar({
     setSheetOpen(false);
   };
 
+  const handleLogout =()=>{
+    localStorage.removeItem("email_farmgpt");
+        window.location.href = "/auth/login";
+  }
   return (
     <div className="w-full flex px-4 py-6 items-center justify-between lg:justify-center ">
       <Sheet open={sheetOpen} onOpenChange={setSheetOpen}>
@@ -110,6 +116,7 @@ export default function ChatTopbar({
             </Button>
           )}
         </PopoverContent>
+     <LogOut className="ml-auto cursor-pointer" onClick={handleLogout} />
       </Popover>
     </div>
   );

@@ -10,7 +10,7 @@ import {
 } from "@/components/ui/dialog";
 import UsernameForm from "@/components/username-form";
 import { generateUUID } from "@/lib/utils";
-import React from "react";
+import React, { useEffect } from "react";
 import useChatStore from "../hooks/useChatStore";
 
 export default function Home() {
@@ -25,9 +25,17 @@ export default function Home() {
     setUserName("Anonymous");
     setOpen(isOpen);
   };
+  useEffect(()=>{
+ 
+      if (!localStorage.getItem("email_farmgpt")) {
+  
+        window.location.href = "/auth/login";
+      }  
+  },[])
+
 
   return (
-    <main className="flex h-[calc(100dvh)] flex-col items-center ">
+    <main className="flex h-[calc(100dvh)] flex-col items-center  ">
       <Dialog open={open} onOpenChange={onOpenChange}>
         <ChatLayout
           key={id}

@@ -1,7 +1,7 @@
 'use client'
 import React, { useState } from 'react';
+import { useRouter } from 'next/navigation'; // Import useRouter
 import { Lock, Mail } from 'lucide-react';
-// import { useRouter } from 'next/router';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
@@ -35,8 +35,9 @@ const LoginPage: React.FC = () => {
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  // const router = useRouter();
   const [showPassword, setShowPassword] = useState(false);
+  
+  const router = useRouter(); // Initialize router
 
   const handleLogin = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -47,20 +48,26 @@ const LoginPage: React.FC = () => {
       const userData = await login(email, password);
       console.log('Login successful:', userData);
       toast.success('Login successful!');
-      setEmail(''); // Clear email
-      setPassword(''); //
-      // router.push('/home');
+      localStorage.setItem("email_farmgpt", email);
+      setEmail(''); 
+      setPassword('');
+      
+      // Navigate to home page
+      
     } catch (err) {
       setError('Invalid email or password');
+      toast.error('Invalid email or password');
     } finally {
       setLoading(false);
+      // router.push('/');
+
+      // router.refresh(); // Forces Next.js to reload page resources
+      window.location.href = '/';
+
+
+
     }
   };
-
-  // Check if router is available
-  // if (!router) {
-  //   return <div>Loading...</div>; // or handle the error appropriately
-  // }
 
   return (
     <div className="min-h-screen bg-[#171717] flex justify-center items-center w-full p-4">
