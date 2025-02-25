@@ -53,19 +53,13 @@ const LoginPage: React.FC = () => {
       setPassword('');
       
       // Navigate to home page
-      
+      window.location.href = '/';
+
     } catch (err) {
       setError('Invalid email or password');
       toast.error('Invalid email or password');
     } finally {
       setLoading(false);
-      // router.push('/');
-
-      // router.refresh(); // Forces Next.js to reload page resources
-      window.location.href = '/';
-
-
-
     }
   };
 
@@ -139,7 +133,7 @@ const LoginPage: React.FC = () => {
           </form>
 
           <p className="mt-6 text-center text-sm text-gray-400">
-            Don't have an account?{' '}
+            Don&apos;t have an account?{' '}
             <a href="#" className="text-blue-400 hover:text-blue-300 font-medium transition-colors duration-200">
               Create account
             </a>
