@@ -1,0 +1,49 @@
+name: Build and Deploy Docker Container
+
+on:
+  push:
+    branches:
+      - feature_
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Build Docker image
+      run: docker build -t farmgptui .
+
+    - name: Save Docker image as a tar file
+      run: docker save -o farmgptui.tar farmgptui
+
+    - name: Upload Docker image to feature_ server
+      if: github.ref == 'refs/heads/feature_'
+      uses: appleboy/scp-action@v0.1.3
+      with:
+        host: ${{ secrets.SERVER_SSH_HOST }}
+        username: ${{ secrets.SERVER_SSH_USERNAME }}
+        key: ${{ secrets.SERVER_SSH_PRIVATE_KEY }}
+        source: farmgptui.tar
+        target: /home/ubuntu/phyfarm/images/
+
+    - name: SSH into the feature_ server and deploy
+      if: github.ref == 'refs/heads/feature_'
+      if: github.ref == 'fea
+      uses: appleboy/ssh-action@master
+      with:
+        host: ${{ secrets.SERVER_SSH_HOST }}
+        username: ${{ secrets.SERVER_SSH_USERNAME }}
+        key: ${{ secrets.SERVER_SSH_PRIVATE_KEY }}
+        script: |
+          # On the server:
+          # 1. Load the Docker image from the tar file
+          docker load -i /home/ubuntu/phyfarm/images/farmgptui.tar
+          
+          # 2. Run a new Docker container with the updated image
+          cd /home/ubuntu/phyfarm/docker/farmgptui
+          
+          docker-compose down || true
+          docker-compose up -d || true
