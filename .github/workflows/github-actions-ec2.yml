@@ -31,7 +31,6 @@ jobs:
 
     - name: SSH into the feature_ server and deploy
       if: github.ref == 'refs/heads/feature_'
-      if: github.ref == 'fea
       uses: appleboy/ssh-action@master
       with:
         host: ${{ secrets.SERVER_SSH_HOST }}
