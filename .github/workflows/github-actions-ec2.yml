@@ -39,10 +39,10 @@ jobs:
         script: |
           # On the server:
           # 1. Load the Docker image from the tar file
-          docker load -i /home/ubuntu/phyfarm/images/farmgptui.tar
+          sudo docker load -i /home/ubuntu/phyfarm/images/farmgptui.tar
           
           # 2. Run a new Docker container with the updated image
           cd /home/ubuntu/phyfarm/docker/farmgptui
           
-          docker-compose down || true
-          docker-compose up -d || true
+          sudo docker-compose down || true
+          sudo docker-compose up -d || true
