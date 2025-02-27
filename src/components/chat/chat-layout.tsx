@@ -12,6 +12,7 @@ import { Message, useChat } from "ai/react";
 import Chat, { ChatProps } from "./chat";
 import ChatList from "./chat-list";
 import { HamburgerMenuIcon } from "@radix-ui/react-icons";
+import { LogOut } from "lucide-react";
 
 interface ChatLayoutProps {
   defaultLayout: number[] | undefined;
@@ -47,6 +48,11 @@ export function ChatLayout({
       window.removeEventListener("resize", checkScreenWidth);
     };
   }, []);
+
+  const handleLogout =()=>{
+    localStorage.removeItem("email_farmgpt");
+        window.location.href = "/auth/login";
+  }
 
   return (
     <ResizablePanelGroup
@@ -96,6 +102,8 @@ export function ChatLayout({
       >
         <Chat id={id} initialMessages={initialMessages} isMobile={isMobile} />
       </ResizablePanel>
+      <LogOut className="absolute right-10 top-5 cursor-pointer" onClick={handleLogout} />
+
     </ResizablePanelGroup>
   );
 }

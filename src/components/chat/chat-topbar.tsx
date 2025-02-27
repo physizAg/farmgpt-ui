@@ -22,7 +22,6 @@ import { Sidebar } from "../sidebar";
 import { Message } from "ai/react";
 import { getSelectedModel } from "@/lib/model-helper";
 import useChatStore from "@/app/hooks/useChatStore";
-import { LogOut } from "lucide-react";
 
 interface ChatTopbarProps {
   isLoading: boolean;
@@ -49,9 +48,12 @@ export default function ChatTopbar({
       const json = await fetchedModels.json();
       const apiModels = json.models.map((model: any) => model.name);
       setModels([...apiModels]);
+      if (apiModels.length > 0) {
+        setSelectedModel(apiModels[0]);
+      }
     };
     fetchModels();
-  }, []);
+  }, [setSelectedModel]);
 
   const handleModelChange = (model: string) => {
     setSelectedModel(model);
@@ -62,10 +64,6 @@ export default function ChatTopbar({
     setSheetOpen(false);
   };
 
-  const handleLogout =()=>{
-    localStorage.removeItem("email_farmgpt");
-        window.location.href = "/auth/login";
-  }
   return (
     <div className="w-full flex px-4 py-6 items-center justify-between lg:justify-center ">
       <Sheet open={sheetOpen} onOpenChange={setSheetOpen}>
@@ -82,42 +80,6 @@ export default function ChatTopbar({
           />
         </SheetContent>
       </Sheet>
-
-      <Popover open={open} onOpenChange={setOpen}>
-        <PopoverTrigger asChild>
-          <Button
-            disabled={isLoading}
-            variant="outline"
-            role="combobox"
-            aria-expanded={open}
-            className="w-[300px] justify-between"
-          >
-            {selectedModel || "Select model"}
-            <CaretSortIcon className="ml-2 h-4 w-4 shrink-0 opacity-50" />
-          </Button>
-        </PopoverTrigger>
-        <PopoverContent className="w-[300px] p-1">
-          {models.length > 0 ? (
-            models.map((model) => (
-              <Button
-                key={model}
-                variant="ghost"
-                className="w-full"
-                onClick={() => {
-                  handleModelChange(model);
-                }}
-              >
-                {model}
-              </Button>
-            ))
-          ) : (
-            <Button variant="ghost" disabled className=" w-full">
-              No models available
-            </Button>
-          )}
-        </PopoverContent>
-     <LogOut className="ml-auto cursor-pointer" onClick={handleLogout} />
-      </Popover>
     </div>
   );
 }
