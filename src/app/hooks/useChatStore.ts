@@ -39,7 +39,7 @@ const useChatStore = create<State & Actions>()(
       chats: {},
       currentChatId: null,
       selectedModel: null,
-      userName: "Anonymous",
+      userName: typeof window !== "undefined" ? localStorage.getItem("username") || "Anonymous" : "Anonymous",
       isDownloading: false,
       downloadProgress: 0,
       downloadingModel: null, 

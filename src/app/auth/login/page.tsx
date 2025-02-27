@@ -49,6 +49,7 @@ const LoginPage: React.FC = () => {
       console.log('Login successful:', userData);
       toast.success('Login successful!');
       localStorage.setItem("email_farmgpt", email);
+      localStorage.setItem("username",userData?.data?.full_name)
       setEmail(''); 
       setPassword('');
       

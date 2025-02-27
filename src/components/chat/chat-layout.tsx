@@ -51,6 +51,7 @@ export function ChatLayout({
 
   const handleLogout =()=>{
     localStorage.removeItem("email_farmgpt");
+    localStorage.removeItem("username");
         window.location.href = "/auth/login";
   }
 
